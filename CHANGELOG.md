@@ -2,6 +2,91 @@
 
 All notable changes to Maintenance Supporter are documented in this file.
 
+## [Unreleased]
+
+### ✨ New
+
+- **Kitchen template: "Oil Wood Cutting Boards".** Wooden cutting boards dry out and crack without regular oiling.
+  The Kitchen template now has a monthly task for it, with a note on how to do it. Kitchens set up
+  before are offered the task once, and you can say no.
+- **Kitchen template: "Descale Kettle", "Clean Coffee Grinder" and "Empty Toaster Crumb Tray".** Three more monthly
+  tasks, each with a short how-to note (built-up toaster crumbs can catch fire). Existing kitchens are offered them
+  once, like the cutting board. Dishwasher descaling stays in the Dishwasher template.
+- **Kitchen template: range hood carbon filters and fridge water filter.** Recirculating hoods get three tasks, one
+  per filter kind, so the defaults fit without editing: "Replace Disposable Hood Carbon Filter" every 4 months, and
+  for regenerable filters "Regenerate Hood Carbon Filter" every 3 months plus "Replace Regenerable Hood Carbon Filter"
+  every 3 years. Leave out the ones that don't match your hood. For the fridge, "Replace Refrigerator Water Filter"
+  (fridges with a water or ice dispenser) and "Replace Refrigerator Carbon Filter" (fridges with an odour filter),
+  both every 6 months. Existing kitchens are offered all five once.
+- **"Clean Range Hood Filter" now has a note:** metal filters go in the dishwasher, fleece or paper ones are replaced.
+  Kitchens whose task still has the template's empty note are offered it as an update.
+- **Electrical Safety template: "Inspect Surge Protectors".** Surge protection modules in the distribution board and
+  surge-protected power strips have an indicator that shows when they no longer protect; the note explains what to
+  look for (colours differ by product) and when to replace them. Checked every 6 months together with the RCD test,
+  and worth a look after a thunderstorm.
+- **Bedroom template: "Tighten Bed Frame Screws".** Wood shrinks in the dry heating season and a wooden or flat-pack
+  bed starts to squeak; every 6 months, with a note on how far to tighten and what to do if it still squeaks.
+- **Bathroom template: "Replace Toothbrushes and Brush Heads".** Every 3 months, as dental associations advise —
+  sooner when the bristles are frayed.
+- **House Exterior and Balcony & Terrace templates: "Clean Outdoor Light Covers".** Insects collect in outdoor lamps;
+  the covers are due on 1 April (cobwebs after winter) and 1 October (insects after summer).
+- **Windows & Doors template: walls and paint.** "Check Walls for Cracks" once a year (fill and repaint hairline
+  cracks; wide, growing or diagonal ones need a builder) and "Touch Up Marks Around Handles and Switches" once a year
+  (wash first, then touch up with the original wall paint).
+- **Electrical Safety template: "Have Aluminium Wiring Connections Re-tightened".** Old aluminium wiring creeps under
+  screw terminals and the contacts loosen and heat up; an electrician should check and re-tighten them about every
+  5 years. For homes with aluminium wiring only — leave it out otherwise. In the US and Canada the note points to the
+  CPSC's permanent repair (COPALUM, AlumiConn) instead.
+- **Kitchen template: "Check Medicines and Expiry Dates".** Every 6 months (expired medicines can lose potency or
+  become unsafe): dispose of them as your country advises (never down the toilet), check opened drops, syrups and
+  ointments, restock. In the Kitchen rather than the Bathroom, since medicines keep better away from a bathroom's
+  humidity. "Check First-Aid Kit" (Fire Safety
+  Equipment) gets a Slovak name and note.
+- **Dishwasher template: "Run Hot Cleaning Cycle".** Frequent eco or low-temperature programmes (below 50 °C) leave
+  grease, biofilm and odours in the wash cabinet. Once a month the empty machine runs a hot programme (at least
+  65 °C), as Miele and Bosch advise. Skip it if your machine's automatic hygiene setting is on. Existing dishwashers
+  are offered it once. The name differs from Home Connect's "Clean Appliance" Machine Care reminder, so that
+  sensor-based proposal is not blocked.
+- **"Descale Showerheads and Aerators" (Drains & Plumbing) now has a note:** how to take them off without scratches,
+  soak and brush them, and when to replace an aerator instead (weak or uneven flow after descaling, damaged insert).
+  Tasks whose note is still the template's empty one are offered it as an update.
+
+### 🔧 Developer notes
+
+- Translations: every new name, note and country note is in `templates_i18n.py` in all 21 languages plus Slovak
+  (`sk`) — `normalize_language_code` passes `sk` through, so a Slovak Home Assistant gets it. `cs` and `sk` were
+  reviewed by a native speaker; the other languages are machine translations.
+- `templates.py` `household_kitchen`: new `TaskTemplate("Oil Wood Cutting Boards", "service", "time_based", 30, 7, …,
+  added="2026-11-19")`.
+- `household_kitchen`: also `TaskTemplate("Descale Kettle", "cleaning", "time_based", 30, 7, …)` and
+  `TaskTemplate("Clean Coffee Grinder", "cleaning", "time_based", 30, 7, …)` and
+  `TaskTemplate("Empty Toaster Crumb Tray", "cleaning", "time_based", 30, 7, …)`, all `added="2026-11-19"`.
+- `household_kitchen`: `TaskTemplate("Replace Disposable Hood Carbon Filter", "replacement", "time_based", 120, 14, …)`,
+  `TaskTemplate("Regenerate Hood Carbon Filter", "cleaning", "time_based", 90, 14, …)`,
+  `TaskTemplate("Replace Regenerable Hood Carbon Filter", "replacement", "time_based", 1095, 60, …)` and
+  `TaskTemplate("Replace Refrigerator Water Filter", "replacement", "time_based", 180, 21, …)` and
+  `TaskTemplate("Replace Refrigerator Carbon Filter", "replacement", "time_based", 180, 21, …)`, all
+  `added="2026-11-19"`; "Clean Range Hood Filter" (key `Range Hood Filter`) gets a note and a Slovak name.
+- `home_electrical`: `TaskTemplate("Inspect Surge Protectors", "inspection", "time_based", 182, 14, …,
+  added="2026-11-19")`, same interval as "Test RCD / GFCI".
+- `household_bedroom`: `TaskTemplate("Tighten Bed Frame Screws", "service", "time_based", 180, 14, …,
+  added="2026-11-19")`.
+- `household_bathroom`: `TaskTemplate("Replace Toothbrushes and Brush Heads", "replacement", "time_based", 90, 14, …,
+  added="2026-11-19")`.
+- `garden_house_exterior`: `TaskTemplate("Clean Outdoor Light Covers", "cleaning", "time_based", 180, 14, …,
+  schedule={"kind": "day_of_month", "day": 1, "months": [4, 10]}, added="2026-11-19")`, scheduled like "Clean
+  Gutters". The same task in `home_balcony`.
+- `home_windows_doors`: `TaskTemplate("Check Walls for Cracks", "inspection", "time_based", 365, 30, …)` and
+  `TaskTemplate("Touch Up Marks Around Handles and Switches", "service", "time_based", 365, 30, …)`, both
+  `added="2026-11-19"`.
+- `home_electrical`: `TaskTemplate("Have Aluminium Wiring Connections Re-tightened", "inspection", "time_based", 1825,
+  60, …, country_notes={"CA": …, "US": …}, added="2026-11-19")`.
+- `household_kitchen`: `TaskTemplate("Check Medicines and Expiry Dates", "inspection", "time_based", 180, 14, …,
+  added="2026-11-19")`. `home_fire_safety` "Check First-Aid Kit": `sk` name and note added.
+- `appliance_dishwasher`: `TaskTemplate("Run Hot Cleaning Cycle", "cleaning", "time_based", 30, 7, …,
+  added="2026-11-19")`.
+- `household_drains` "Descale Showerheads and Aerators": note and `sk` name added.
+
 ## [2.124.1] - 2026-11-17
 
 Sensor cleaning on Roborock and Xiaomi robots.
